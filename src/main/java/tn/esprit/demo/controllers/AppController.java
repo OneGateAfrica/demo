@@ -2,52 +2,42 @@ package tn.esprit.demo.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import tn.esprit.demo.entities.Magasin;
-import tn.esprit.demo.entities.Produit;
+import tn.esprit.demo.entities.*;
 import tn.esprit.demo.services.IAppService;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class AppController {
     private final IAppService iAppService;
 
-    @PostMapping("addProduit")
-    public Produit addProduit(@RequestBody Produit produit) {
-        return iAppService.addProduit(produit);
-    }
-    @PutMapping("updateProduit")
-
-    public Produit updateProduit(@RequestBody Produit produit) {
-        return iAppService.updateProduit(produit);
-    }
-    @DeleteMapping("deleteProduit/{id}")
-    public void deleteProduit(@PathVariable Long id) {
-    iAppService.deleteProduit(id);
-    }
-    @GetMapping("getProduits")
-    public List<Produit> getAllProduits() {
-        return iAppService.getAllProduits();
+    @PostMapping("/user/add")
+    public Utilisateur save(@RequestBody Utilisateur entity) {
+        return iAppService.ajouterUtilisateur(entity);
     }
 
-    @PostMapping("addMagasin")
-    public Magasin addMagasin(@RequestBody Magasin magasin) {
-        return iAppService.addMagasin(magasin);
+    @PostMapping("/classe/add")
+    public Classe ajouterClasse(@RequestBody Classe c) {
+        return iAppService.ajouterClasse(c);
+    }
+    @PostMapping("ajouterCourCLasseRoom/{codeClasse}")
+    public CourClassRoom ajouterCourCLasseRoom(@RequestBody CourClassRoom c,@PathVariable Integer codeClasse) {
+        return iAppService.ajouterCourCLasseRoom(c,codeClasse);
+    }
+    @PutMapping("affecterUtilisateurClasse/{idUser}/{codeClasse}")
+    public void affecterUtilisateurClasse(@PathVariable Integer idUser,@PathVariable Integer codeClasse) {
+        iAppService.affecterUtilisateurClasse(idUser, codeClasse);
+    }
+@GetMapping("/nbUsers/{nv}")
+    public Integer nbUtilisateurParNiveau(@PathVariable Niveau nv) {
+        return iAppService.nbUtilisateurParNiveau(nv);
+    }
+    @PutMapping("/desaffecter/{idCours}")
+    public void desaffecterCoursClassRoom(@PathVariable Integer idCours) {
+        iAppService.desaffecterCoursClassRoom(idCours);
     }
 
-    @PutMapping("updateMagasin")
-    public Magasin updateMagasin(Magasin magasin) {
-        return iAppService.updateMagasin(magasin);
-    }
-
-
-    @DeleteMapping("deleteMagasin/{id}")
-    public void deleteMagasin(Long id) {
-    iAppService.deleteMagasin(id);
-    }
-    @GetMapping("getMagasins")
-    public List<Magasin> getAllMagasins() {
-        return iAppService.getAllMagasins();
+    @GetMapping("/nbhoures/{specialite}/{nv}")
+    public Integer nbHouresParSpecEtNiveau(@PathVariable Specialite specialite,@PathVariable Niveau nv) {
+        return iAppService.nbHouresParSpecEtNiveau(specialite,nv);
     }
 }
